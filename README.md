@@ -186,7 +186,7 @@ Include screenshots of your app for Login and Home Screens here (optional):
 
 | **Login Screen**               | **Home Screen**               |
 |--------------------------------|--------------------------------|
-| ![Login](assets/login.png)    | ![Home](assets/login.png)      |
+| ![Login](bhookhapp/assets/login.png)    | ![Home](assets/login.png)      |
 
 ---
 
