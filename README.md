@@ -1,79 +1,217 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
 
-# Getting Started
+# BhookhApp
 
->**Note**: Make sure you have completed the [React Native - Environment Setup](https://reactnative.dev/docs/environment-setup) instructions till "Creating a new application" step, before proceeding.
+BhookhApp is a simple restaurant app inspired by food delivery apps like Swiggy and Zomato. Built with **React Native**, the app demonstrates the use of clean code practices, a reusable component-based architecture, API integration, and consistent theming. This project is designed to showcase a modular and production-ready approach to React Native development.
 
-## Step 1: Start the Metro Server
+---
 
-First, you will need to start **Metro**, the JavaScript _bundler_ that ships _with_ React Native.
+## Features
 
-To start Metro, run the following command from the _root_ of your React Native project:
+- **Login Screen**:
+  - Mock authentication using predefined users.
+  - Basic input validation with error messages for invalid credentials.
+- **Home Screen**:
+  - Displays a personalized greeting with the logged-in user’s name.
+  - Fetches and displays recipes from [dummyjson.com/recipes](https://dummyjson.com/recipes).
+  - Includes a refresh button to re-fetch data from the API.
+- **Theming**:
+  - Consistent color palette and typography using a global `theme.js`.
+- **Reusable Components**:
+  - `CustomButton` for buttons.
+  - `RecipeCard` for displaying recipe details.
+- **Error Handling**:
+  - Graceful error messages when API requests fail.
 
-```bash
-# using npm
-npm start
+---
 
-# OR using Yarn
-yarn start
+## Technologies Used
+
+- **React Native CLI** (0.71+)
+- **React Navigation** for screen transitions.
+- **React Native Web** (optional, if targeting the web).
+- **JavaScript** (with modular ES6+ syntax).
+- **API Integration**: Fetch recipes from a dummy API.
+
+---
+
+## Installation and Setup
+
+Follow these steps to set up the project locally:
+
+### Prerequisites
+
+- **Node.js**: Download and install the latest LTS version from [Node.js](https://nodejs.org/).
+- **React Native CLI**: Installed via `npx` (you don’t need a global installation).
+- **Android Studio**: For Android builds.
+- **Xcode**: For iOS builds (macOS only).
+
+---
+
+### Installation Steps
+
+1. **Clone the repository**:
+   ```bash
+   git clone https://github.com/Gaurav-glitchx/BhookhApp.git
+   cd BhookhApp
+   ```
+
+2. **Install dependencies**:
+   ```bash
+   npm install
+   # or
+   yarn
+   ```
+
+3. **Start the development server**:
+   ```bash
+   npx react-native start
+   ```
+
+4. **Run the app on Android**:
+   ```bash
+   npx react-native run-android
+   ```
+   Make sure an Android emulator is running or a physical device is connected.
+
+5. **Run the app on iOS** (macOS only):
+   - Install CocoaPods:
+     ```bash
+     cd ios
+     pod install
+     cd ..
+     ```
+   - Run the app:
+     ```bash
+     npx react-native run-ios
+     ```
+
+6. (Optional) **Run on Web**:
+   If you’ve set up React Native Web or are using Expo:
+   ```bash
+   expo start --web
+   ```
+
+---
+
+## Folder Structure
+
+Here’s the organized folder structure of the project:
+
+```
+BhookhApp
+├── android                 # Android native files
+├── ios                     # iOS native files
+├── src                     # Main source code
+│   ├── components          # Reusable components
+│   │   ├── CustomButton.js
+│   │   └── RecipeCard.js
+│   ├── constants           # Constants (e.g., mock users)
+│   │   └── mockUsers.js
+│   ├── controllers         # API integrations and logic
+│   │   └── recipeController.js
+│   ├── navigation          # Navigation setup
+│   │   └── AppNavigator.js
+│   ├── screens             # App screens
+│   │   ├── LoginScreen.js
+│   │   └── HomeScreen.js
+│   ├── styles              # Theming and styling
+│   │   └── theme.js
+│   └── App.js              # Main app entry
+├── app.json                # App configuration
+├── index.js                # Entry point for React Native
+├── package.json            # Dependencies and scripts
+└── README.md               # Project documentation
 ```
 
-## Step 2: Start your Application
+---
 
-Let Metro Bundler run in its _own_ terminal. Open a _new_ terminal from the _root_ of your React Native project. Run the following command to start your _Android_ or _iOS_ app:
+## Usage Instructions
 
-### For Android
+1. Launch the app on an emulator or device.
+2. On the **Login Screen**, enter the following credentials (mocked users):
+   - Username: `john`, Password: `123456`
+   - Username: `jane`, Password: `password`
+   - Username: `ashu`, Password: `secret`
+3. Click **Login** to navigate to the **Home Screen**.
+4. View the list of recipes fetched from the API.
+5. Use the **Refresh** button to reload the recipe list.
 
-```bash
-# using npm
-npm run android
+---
 
-# OR using Yarn
-yarn android
+## API Integration
+
+The app fetches recipe data from [dummyjson.com/recipes](https://dummyjson.com/recipes).
+
+Example response:
+```json
+{
+  "recipes": [
+    {
+      "id": 1,
+      "title": "Spaghetti Carbonara",
+      "description": "A classic Italian pasta dish with creamy sauce.",
+      "thumbnail": "https://via.placeholder.com/150"
+    },
+    ...
+  ]
+}
 ```
 
-### For iOS
+---
 
-```bash
-# using npm
-npm run ios
+## Theming
 
-# OR using Yarn
-yarn ios
+The app uses a centralized `theme.js` for consistent design across components and screens.
+
+### Example Theme
+```js
+export const COLORS = {
+  primary: '#FF640D',
+  text: '#2F2E41',
+  background: '#FFFFFF',
+  backgroundLight: '#ECECEC',
+};
+
+export const SIZES = {
+  heading1: 39,
+  body1: 20,
+};
 ```
 
-If everything is set up _correctly_, you should see your new app running in your _Android Emulator_ or _iOS Simulator_ shortly provided you have set up your emulator/simulator correctly.
+---
 
-This is one way to run your app — you can also run it directly from within Android Studio and Xcode respectively.
+## Screenshots
 
-## Step 3: Modifying your App
+Include screenshots of your app for Login and Home Screens here (optional):
 
-Now that you have successfully run the app, let's modify it.
+| **Login Screen**               | **Home Screen**               |
+|--------------------------------|--------------------------------|
+| ![Login](path/to/login.jpg)    | ![Home](path/to/home.jpg)      |
 
-1. Open `App.tsx` in your text editor of choice and edit some lines.
-2. For **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Developer Menu** (<kbd>Ctrl</kbd> + <kbd>M</kbd> (on Window and Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (on macOS)) to see your changes!
+---
 
-   For **iOS**: Hit <kbd>Cmd ⌘</kbd> + <kbd>R</kbd> in your iOS Simulator to reload the app and see your changes!
+## Challenges Faced
 
-## Congratulations! :tada:
+- Ensuring API requests and state management were handled cleanly.
+- Maintaining consistent theming across screens and components.
+- Simulating mock authentication for the Login Screen.
 
-You've successfully run and modified your React Native App. :partying_face:
+---
 
-### Now what?
+## Future Enhancements
 
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [Introduction to React Native](https://reactnative.dev/docs/getting-started).
+1. **Pagination**: Add infinite scrolling for the recipe list.
+2. **Search Functionality**: Allow users to search for specific recipes.
+3. **Global State Management**: Implement Redux or Zustand for scalable state handling.
+4. **Type Safety**: Use TypeScript for better type safety and code maintainability.
+5. **Unit Tests**: Add tests for API calls and components.
 
-# Troubleshooting
+---
 
-If you can't get this to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
+## License
 
-# Learn More
+This project is licensed under the **MIT License**. You are free to use, modify, and distribute this code.
 
-To learn more about React Native, take a look at the following resources:
+---
 
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+Feel free to modify the **README.md** to fit your project or organization’s requirements. It provides a detailed overview of the app while being easy to follow for developers or users.
