@@ -1,19 +1,18 @@
-// src/components/RecipeCard.js
 import React from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
-import theme from '../styles/theme';
 
-const RecipeCard = ({ title, description, imageUrl }) => {
-  const validImageUrl = imageUrl && imageUrl.startsWith('http')
-    ? imageUrl
-    : 'https://via.placeholder.com/150'; // Fallback to placeholder
+const RecipeCard = ({ name, ingredients, image }) => {
+  const imageUrl =
+    typeof image === 'string' && image.startsWith('http')
+      ? image
+      : 'https://via.placeholder.com/150';
 
   return (
     <View style={styles.card}>
-      <Image source={{ uri: validImageUrl }} style={styles.cardImage} />
-      <View style={styles.cardInfo}>
-        <Text style={styles.cardTitle}>{title}</Text>
-        <Text style={styles.cardDesc}>{description}</Text>
+      <Image source={{ uri: imageUrl }} style={styles.image} />
+      <View style={styles.info}>
+        <Text style={styles.title}>{name}</Text>
+        <Text style={styles.description}>{ingredients.join(', ')}</Text>
       </View>
     </View>
   );
@@ -24,27 +23,26 @@ export default RecipeCard;
 const styles = StyleSheet.create({
   card: {
     flexDirection: 'row',
+    padding: 10,
     borderWidth: 1,
-    borderColor: theme.COLORS.backgroundLight,
-    borderRadius: 8,
-    overflow: 'hidden',
+    borderColor: '#ccc',
     marginBottom: 10,
+    borderRadius: 5,
   },
-  cardImage: {
+  image: {
     width: 80,
     height: 80,
+    marginRight: 10,
   },
-  cardInfo: {
+  info: {
     flex: 1,
-    padding: 8,
   },
-  cardTitle: {
-    ...theme.FONTS.body1,
+  title: {
+    fontSize: 16,
     fontWeight: 'bold',
-    marginBottom: 4,
   },
-  cardDesc: {
-    ...theme.FONTS.body3,
-    color: '#666',
+  description: {
+    fontSize: 14,
+    color: '#555',
   },
 });

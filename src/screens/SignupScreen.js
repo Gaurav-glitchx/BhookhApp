@@ -1,31 +1,35 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, TouchableOpacity, StyleSheet, Image } from 'react-native';
-import mockUsers from '../constants/mockUsers'; // Import mock users
+import { View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
+import mockUsers from '../constants/mockUsers'; // Mock users data
 
-const LoginScreen = ({ navigation }) => {
+const SignupScreen = ({ navigation }) => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
 
-  const handleLogin = () => {
-    const user = mockUsers.find(
-      (user) => user.username === username && user.password === password
-    );
-
-    if (user) {
-      navigation.navigate('Home', { username: user.username });
-    } else {
-      setErrorMessage('Invalid credentials. Please try again.');
+  const handleSignup = () => {
+    if (password !== confirmPassword) {
+      setErrorMessage('Passwords do not match');
+      return;
     }
+
+    const userExists = mockUsers.some((user) => user.username === username);
+
+    if (userExists) {
+      setErrorMessage('Username already exists. Please try a different one.');
+      return;
+    }
+
+    // Save user to mock data (simulate API call)
+    mockUsers.push({ username, password });
+    Alert.alert('Success', 'Your account has been created. Please log in.');
+    navigation.navigate('Login');
   };
 
   return (
     <View style={styles.container}>
-      {/* Logo */}
-      <Image source={require('../assets/logo.png')} style={styles.logo} />
-      
-      <Text style={styles.title}>Welcome to Bhookh</Text>
-      <Text style={styles.subtitle}>Eat. Drink. Love.</Text>
+      <Text style={styles.title}>Create an Account</Text>
 
       {/* Username Input */}
       <TextInput
@@ -44,20 +48,29 @@ const LoginScreen = ({ navigation }) => {
         onChangeText={setPassword}
       />
 
+      {/* Confirm Password Input */}
+      <TextInput
+        style={styles.input}
+        placeholder="Confirm Password"
+        secureTextEntry
+        value={confirmPassword}
+        onChangeText={setConfirmPassword}
+      />
+
       {/* Error Message */}
       {errorMessage ? <Text style={styles.error}>{errorMessage}</Text> : null}
 
-      {/* Login Button */}
-      <TouchableOpacity style={styles.button} onPress={handleLogin}>
-        <Text style={styles.buttonText}>Log In</Text>
+      {/* Signup Button */}
+      <TouchableOpacity style={styles.button} onPress={handleSignup}>
+        <Text style={styles.buttonText}>Sign Up</Text>
       </TouchableOpacity>
 
-      {/* Signup Navigation */}
+      {/* Login Navigation */}
       <TouchableOpacity
         style={styles.linkContainer}
-        onPress={() => navigation.navigate('Signup')}
+        onPress={() => navigation.navigate('Login')}
       >
-        <Text style={styles.linkText}>Don't have an account? Sign Up</Text>
+        <Text style={styles.linkText}>Already have an account? Log In</Text>
       </TouchableOpacity>
     </View>
   );
@@ -71,19 +84,9 @@ const styles = StyleSheet.create({
     backgroundColor: '#fff',
     padding: 16,
   },
-  logo: {
-    width: 100,
-    height: 100,
-    marginBottom: 24,
-  },
   title: {
     fontSize: 24,
     fontWeight: 'bold',
-    color: '#2F2E41',
-    marginBottom: 8,
-  },
-  subtitle: {
-    fontSize: 16,
     color: '#2F2E41',
     marginBottom: 24,
   },
@@ -123,4 +126,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default LoginScreen;
+export default SignupScreen;

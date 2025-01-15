@@ -1,80 +1,48 @@
-// src/screens/HomeScreen.js
-import React, { useEffect, useState, useCallback } from 'react';
-import {
-  View,
-  Text,
-  ActivityIndicator,
-  FlatList,
-  StyleSheet,
-} from 'react-native';
-import CustomButton from '../components/CustomButton';
-import RecipeCard from '../components/RecipeCard';
-import { fetchRecipes } from '../controllers/recipeController';
-import theme from '../styles/theme';
+import React, { useEffect, useState } from 'react';
+import { View, Text, FlatList, Image, StyleSheet, TouchableOpacity, Button, Alert } from 'react-native';
+import { COLORS, SIZES, FONTS } from '../styles/theme';
 
-const HomeScreen = ({ route }) => {
-  const { userName = 'Guest' } = route.params || {};
-
+const HomeScreen = ({ navigation, route }) => {
+  const { username } = route.params || { username: 'User' };
   const [recipes, setRecipes] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [errorMsg, setErrorMsg] = useState('');
-
-  const loadRecipes = useCallback(async () => {
-    try {
-      setLoading(true);
-      setErrorMsg('');
-      const data = await fetchRecipes();
-      console.log('Fetched Recipes:', data); // Debug fetched recipes
-      setRecipes(data);
-    } catch (error) {
-      console.error('Error fetching recipes:', error);
-      setErrorMsg('Failed to load recipes. Please try again later.');
-    } finally {
-      setLoading(false);
-    }
-  }, []);
 
   useEffect(() => {
-    loadRecipes();
-  }, [loadRecipes]);
+    fetch('https://dummyjson.com/recipes')
+      .then((response) => response.json())
+      .then((data) => setRecipes(data.recipes))
+      .catch((error) => console.error(error));
+  }, []);
 
-  const renderRecipeItem = ({ item }) => {
-    console.log('Rendering Recipe Item:', item); // Debug individual recipe
-    const imageUrl = item.image || 'https://via.placeholder.com/150';
-    return (
-      <RecipeCard
-        title={item.name}
-        description={item.ingredients?.join(', ')} // Displaying ingredients as description
-        imageUrl={imageUrl}
-      />
-    );
+  const handleLogout = () => {
+    Alert.alert('Logout', 'Are you sure you want to logout?', [
+      { text: 'Cancel', style: 'cancel' },
+      { text: 'Logout', onPress: () => navigation.replace('Login') },
+    ]);
+  };
+
+  const navigateToDetails = (recipe) => {
+    navigation.navigate('RecipeDetails', { recipe });
   };
 
   return (
     <View style={styles.container}>
-      <Text style={styles.greeting}>Hello, {userName}!</Text>
-
-      {loading && (
-        <ActivityIndicator size="large" color={theme.COLORS.primary} />
-      )}
-
-      {errorMsg ? (
-        <View style={styles.errorContainer}>
-          <Text style={styles.errorText}>{errorMsg}</Text>
-          <CustomButton title="Try Again" onPress={loadRecipes} />
-        </View>
-      ) : (
-        <FlatList
-          data={recipes}
-          keyExtractor={(item) => item.id.toString()} // Ensure unique IDs
-          renderItem={renderRecipeItem}
-          contentContainerStyle={{ paddingBottom: 80 }}
-        />
-      )}
-
-      <View style={styles.refreshContainer}>
-        <CustomButton title="Refresh" onPress={loadRecipes} />
+      <View style={styles.header}>
+        <Text style={styles.greeting}>Hello, {username}!</Text>
+        <Button title="Logout" onPress={handleLogout} color={COLORS.primary} />
       </View>
+      <FlatList
+        data={recipes}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={({ item }) => (
+          <TouchableOpacity style={styles.card} onPress={() => navigateToDetails(item)}>
+            <Image source={{ uri: item.image }} style={styles.image} />
+            <View style={styles.info}>
+              <Text style={styles.title}>{item.name}</Text>
+              <Text style={styles.subtitle}>{item.cuisine} - {item.difficulty}</Text>
+            </View>
+          </TouchableOpacity>
+        )}
+      />
     </View>
   );
 };
@@ -84,26 +52,43 @@ export default HomeScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: theme.COLORS.background,
-    padding: 16,
+    backgroundColor: COLORS.background,
+    padding: 20,
+  },
+  header: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
   },
   greeting: {
-    ...theme.FONTS.heading2,
-    marginBottom: 12,
+    fontSize: SIZES.heading2,
+    fontFamily: FONTS.bold,
   },
-  errorContainer: {
-    marginTop: 20,
+  card: {
+    backgroundColor: COLORS.backgroundLight,
+    padding: 15,
+    borderRadius: 8,
+    marginBottom: 15,
+    flexDirection: 'row',
     alignItems: 'center',
   },
-  errorText: {
-    ...theme.FONTS.body2, // This line depends on 'body2' being defined
-    color: 'red',
-    marginBottom: 12,
-    textAlign: 'center',
+  image: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+    marginRight: 15,
   },
-  refreshContainer: {
-    position: 'absolute',
-    bottom: 16,
-    alignSelf: 'center',
+  info: {
+    flex: 1,
+  },
+  title: {
+    fontSize: SIZES.body1,
+    fontFamily: FONTS.bold,
+  },
+  subtitle: {
+    fontSize: SIZES.body2,
+    fontFamily: FONTS.regular,
+    color: COLORS.text,
   },
 });

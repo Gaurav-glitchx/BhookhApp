@@ -1,5 +1,5 @@
 // src/constants/mockUsers.js
-export const mockUsers = [
+const mockUsers = [
     {
       username: 'john',
       password: '123456',
@@ -16,4 +16,4 @@ export const mockUsers = [
       name: 'Ashutosh',
     },
   ];
-  
+  export default mockUsers;
