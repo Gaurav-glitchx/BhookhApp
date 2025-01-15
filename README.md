@@ -208,6 +208,18 @@ Include screenshots of your app for Login and Home Screens here (optional):
 
 ---
 
+## Developer Details
+
+**Name**: Gaurav Mishra  
+**Qualification**: MCA, Banaras Hindu University  
+**Role**: Full Stack Developer  
+
+- **Email**: gaurav.mishra@bhu.ac.in  
+- **Phone**: +91 9140646943  
+- **LinkedIn**: [Gaurav the Coder](https://www.linkedin.com/in/gauravthecoder/)
+
+---
+
 ## License
 
 This project is licensed under the **MIT License**. You are free to use, modify, and distribute this code.
